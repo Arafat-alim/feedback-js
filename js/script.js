@@ -11,30 +11,35 @@ submit.addEventListener("click", async (e) => {
   let msg = document.getElementById("mesasge").value;
   let extra = document.getElementById("extraDetail").value;
 
-  //   ! sending the datas to the firebase
-  let res = await fetch(
-    "https://contactus-ec3b4-default-rtdb.firebaseio.com/contactus.json",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firstName: fname,
-        lastName: lname,
-        emailId: email,
-        comment: msg,
-        ExtraComment: extra,
-      }),
+  //! Validation
+  if (fname && lname && email && msg) {
+    //   ! sending the datas to the firebase
+    let res = await fetch(
+      "https://contactus-ec3b4-default-rtdb.firebaseio.com/contactus.json",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: fname,
+          lastName: lname,
+          emailId: email,
+          comment: msg,
+          ExtraComment: extra,
+        }),
+      }
+    );
+    if (res) {
+      document.getElementById("fname").value = "";
+      document.getElementById("lname").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("mesasge").value = "";
+      document.getElementById("extraDetail").value = "";
     }
-  );
-  if (res) {
-    document.getElementById("fname").value = "";
-    document.getElementById("lname").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("mesasge").value = "";
-    document.getElementById("extraDetail").value = "";
+    alert("Thank You For Your Valuable Feedback!");
+    res.catch((err) => console.log(err));
+  } else {
+    alert("Please Fill the required Fields.");
   }
-  alert("Thank You For Your Valuable Feedback!");
-  res.catch((err) => console.log(err));
 });
